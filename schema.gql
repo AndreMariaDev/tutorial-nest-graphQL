@@ -1,0 +1,119 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserType {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  isActive: Boolean!
+}
+
+type PhotoType {
+  id: ID!
+  name: String!
+  description: String!
+  filename: String!
+  views: Float!
+  isPublished: Boolean!
+  user: UserType!
+  userId: Float!
+}
+
+type UserUploadProfilePicType {
+  success: Boolean!
+}
+
+type LoginType {
+  id: ID!
+  userName: String!
+  password: String!
+  isActive: Boolean!
+  userId: Float!
+}
+
+type AccessTokenType {
+  access_token: String!
+}
+
+type Query {
+  findAllUsers: [UserType!]!
+  findOneUser(id: Int!): UserType!
+  findAllPhotos: [PhotoType!]!
+  findOnePhoto(id: Int!): PhotoType!
+  whoAmI: UserType!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): UserType!
+  updateUser(id: Float!, input: UpdateUserInput!): UserType!
+  deleteUser(id: Float!): String!
+  createPhoto(input: CreatePhotoInput!): PhotoType!
+  updatePhoto(id: Float!, input: UpdatePhotoInput!): PhotoType!
+  deletePhoto(id: Float!): String!
+  uploadProfilePic(UploadUserProfilePicInput: UploadUserProfilePicInput!): UserUploadProfilePicType!
+  login(input: ValidationLoginUserInput!): AccessTokenType!
+  validateUserLogin(input: ValidationLoginUserInput!): LoginType!
+  createLoginUser(input: CreateLoginUserInput!): LoginType!
+  updateLoginUser(id: Float!, input: UpdateLoginUserInput!): LoginType!
+  deleteLoginUser(id: Float!): String!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  isActive: Boolean!
+}
+
+input UpdateUserInput {
+  id: Float!
+  firstName: String!
+  lastName: String!
+  isActive: Boolean!
+}
+
+input CreatePhotoInput {
+  name: String!
+  description: String!
+  filename: String!
+  isPublished: Boolean!
+  views: Float!
+  userId: Float!
+}
+
+input UpdatePhotoInput {
+  id: Float!
+  name: String!
+  description: String!
+  filename: String!
+  isPublished: Boolean!
+  views: Float!
+  userId: Float!
+}
+
+input UploadUserProfilePicInput {
+  file: Upload!
+}
+
+"""File upload scalar type"""
+scalar Upload
+
+input ValidationLoginUserInput {
+  userName: String!
+  password: String!
+}
+
+input CreateLoginUserInput {
+  userName: String!
+  password: String!
+  isActive: Boolean!
+  userId: Float!
+}
+
+input UpdateLoginUserInput {
+  id: Float!
+  userName: String!
+  password: String!
+  isActive: Boolean!
+  userId: Float!
+}
