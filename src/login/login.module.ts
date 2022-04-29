@@ -8,9 +8,14 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/auth/constants';
+import { RedisCacheModule } from '../cache/redis.cache.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from '../auth/jwt.strategy';
+import { GraphqlAuthGuard } from '../auth/GraphqlAuthGuard ';
 
 @Module({
   imports: [
+    PassportModule,
     DatabaseModule,
     JwtModule.register({
       secret: jwtConstants.secret,
@@ -18,10 +23,13 @@ import { jwtConstants } from 'src/auth/constants';
     }),
     forwardRef(() => AuthModule),
     UsersModule,
+    RedisCacheModule
   ],
   providers:[
     LoginUserResolver,
-    LoginUsersService, ...loginUsersProviders
+    LoginUsersService, ...loginUsersProviders,
+    JwtStrategy, 
+    GraphqlAuthGuard
   ],
   exports:[LoginUsersService]
 })

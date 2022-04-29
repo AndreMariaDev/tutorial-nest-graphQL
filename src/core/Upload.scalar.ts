@@ -1,19 +1,19 @@
-import { Scalar } from "@nestjs/graphql";
-import { GraphQLUpload } from 'graphql-upload';
+// import { Scalar } from "@nestjs/graphql";
+// import { GraphQLUpload } from 'graphql-upload';
 
-@Scalar('Upload')
-export class Upload {
-    description = 'File upload scalar type'
+// @Scalar('Upload')
+// export class Upload {
+//     description = 'File upload scalar type'
 
-    parseValue(value){
-        return GraphQLUpload.parseValue(value);
-    }
+//     parseValue(value){
+//         return GraphQLUpload.parseValue(value);
+//     }
 
-    serialize(value){
-        return GraphQLUpload.serialize(value);
-    }
+//     serialize(value){
+//         return GraphQLUpload.serialize(value);
+//     }
 
-    parseLiteral(ast){
-        return GraphQLUpload.parseLiteral(ast, ast.value);
-    }
-}
+//     parseLiteral(ast){
+//         return GraphQLUpload.parseLiteral(ast, ast.value);
+//     }
+// }

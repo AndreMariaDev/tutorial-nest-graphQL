@@ -27,7 +27,7 @@ import { GraphqlAuthGuard } from './GraphqlAuthGuard ';
   ],
   providers: [
     AuthService, 
-    LocalStrategy, 
+    // LocalStrategy, 
     JwtStrategy, 
     GraphqlAuthGuard],
   exports: [AuthService],

@@ -1,6 +1,6 @@
 
 import { Field, InputType } from "@nestjs/graphql";
-import { Upload } from "../core/Upload.scalar";
+// import { Upload } from "../core/Upload.scalar";
 
 @InputType()
 export class CreatePhotoInput {
@@ -49,8 +49,9 @@ export class UpdatePhotoInput {
     readonly userId: number;
 }
 
-@InputType()
-export class UploadUserProfilePicInput {
-    @Field()
-    file : Upload
-}
+// @InputType()
+// export class UploadUserProfilePicInput {
+//     @Field()
+//     file : Uploadcls
+
+// }

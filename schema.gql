@@ -20,10 +20,6 @@ type PhotoType {
   userId: Float!
 }
 
-type UserUploadProfilePicType {
-  success: Boolean!
-}
-
 type LoginType {
   id: ID!
   userName: String!
@@ -51,7 +47,7 @@ type Mutation {
   createPhoto(input: CreatePhotoInput!): PhotoType!
   updatePhoto(id: Float!, input: UpdatePhotoInput!): PhotoType!
   deletePhoto(id: Float!): String!
-  uploadProfilePic(UploadUserProfilePicInput: UploadUserProfilePicInput!): UserUploadProfilePicType!
+  uploadFile(file: Upload!): Boolean!
   login(input: ValidationLoginUserInput!): AccessTokenType!
   validateUserLogin(input: ValidationLoginUserInput!): LoginType!
   createLoginUser(input: CreateLoginUserInput!): LoginType!
@@ -91,11 +87,7 @@ input UpdatePhotoInput {
   userId: Float!
 }
 
-input UploadUserProfilePicInput {
-  file: Upload!
-}
-
-"""File upload scalar type"""
+"""The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 input ValidationLoginUserInput {

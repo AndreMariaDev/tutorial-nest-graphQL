@@ -5,9 +5,12 @@ import { AuthService } from '../auth/auth.service';
 
 import { LoginUser } from '../models/login.model';
 import { LoginType } from './login.dto';
-import {CreateLoginUserInput, UpdateLoginUserInput, ValidationLoginUserInput } from './login.input';
+import { CreateLoginUserInput, UpdateLoginUserInput, ValidationLoginUserInput } from './login.input';
 import { User } from 'src/models/user.model';
 import { JwtService } from '@nestjs/jwt';
+import { RedisCacheService } from '../cache/redis.cache.service';
+import { Json } from 'sequelize/types/utils';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class LoginUsersService {
@@ -17,7 +20,8 @@ export class LoginUsersService {
     private readonly userRepository: typeof LoginUser,
     @Inject(forwardRef(() => AuthService))private authService: AuthService,
     private readonly userService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    public readonly redisCacheService: RedisCacheService
   ) {}
 
   async validateLogin(input: ValidationLoginUserInput){
@@ -36,31 +40,31 @@ export class LoginUsersService {
 
   async validateUser(input: ValidationLoginUserInput): Promise<LoginUser> {
     return await this.validateUserLogin(input);
-    // let result = await this.validateUserLogin(input).then(async (result)=>{
-    //   if (result && result.isActive) {
-    //     return result;
-    //   }
-    //   else {
-    //     return null;
-    //   }
-    // }).catch(error=>console.log(`Error method loginUsersService.validateUserLogin:${error}`));;
-
-    // return result;
   }
 
   async whoAmI(userName:string): Promise<User>{
-    return this.userRepository.findOne({
-      raw:true,
-      where: {
-        userName : userName
-      }
-    }).then(response=>{
-      if(response){
-        return this.userService.findOneData(response.userId.toString()).then(userResponse =>{
-          return userResponse;
-        })
-      }
-    });
+
+    const cache = await this.redisCacheService.get(`whoAmI: ${userName}`);
+    if(!cache){
+      return this.userRepository.findOne({
+        raw:true,
+        where: {
+          userName : userName
+        }
+      }).then(response=>{
+        if(response){
+          return this.userService.findOneData(response.userId.toString()).then(userResponse =>{
+            this.redisCacheService.set(
+              `whoAmI: ${userName}`,
+              JSON.stringify(response),
+              { ttl: 300 })
+            return userResponse;
+          })
+        }
+      });
+    }
+
+    return new Promise<User>(JSON.parse(cache))
   }
 
   async validateUserLogin(input: ValidationLoginUserInput): Promise<LoginUser> {

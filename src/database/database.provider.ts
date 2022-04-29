@@ -11,13 +11,13 @@ export const databaseProviders = [
     provide: 'SEQUELIZE',
     useFactory: async () => {
       const sequelize = new Sequelize(
-        dbConfig.DB || 'tutorial_db', 
+        dbConfig.DB || 'tutorial_graphql_db', 
         dbConfig.USER || 'root', 
         dbConfig.PASSWORD || '123456', 
         {
           host: dbConfig.HOST || 'localhost',
           dialect: "mysql",
-          port: Number(dbConfig.port) || 3307,
+          port: Number(dbConfig.port) || 3308,
           pool: {
             max: dbConfig.pool.max,
             min: dbConfig.pool.min,
