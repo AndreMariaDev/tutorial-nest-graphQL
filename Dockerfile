@@ -13,6 +13,7 @@ COPY . .
 FROM node-version
 WORKDIR /usr/src/app
 COPY --from=builder --chown=node:node /usr/src/app .
+RUN chown node:node /usr/src/app
 USER node
 EXPOSE 3000
 CMD [ "npm", "start" ]
